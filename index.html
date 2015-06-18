@@ -17,35 +17,44 @@ var width = q.width=s.width;
 var height = q.height;
 var yPositions = Array(300).join(0).split('');
 console.log('ypos len = ', yPositions.length);
+
+var lengths = [];
+for (var i=0, t=300; i<t; i++) {
+    lengths.push(Math.round(Math.random() * 500))
+}
+console.log(Array);
 var ctx=q.getContext('2d');
+var index = 0;
+var x, y=0, rand, p;
  
-var draw = function () {
-  ctx.fillStyle='rgba(0,0,0,0.05)';
-  ctx.fillRect(0,0,width,height);
-  ctx.fillStyle='#0F0';
-  ctx.font = '10pt Georgia';
-  yPositions.map(function(y, index){
-    text = String.fromCharCode(1e2+Math.random()*33);
-    console.log('text len = ', text.length);
-    x = (index * 10)+10;
-    console.log('x = ', x, ' y = ', y, 'index = ', index );
-    q.getContext('2d').fillText(text, x, y);
-    if(y > 100 + Math.random()*1e4)
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+    
+var draw = function() {
+    ctx.fillStyle='rgba(0,0,0,0.05)';
+    ctx.fillRect(0,0,width,height);
+    ctx.fillStyle='#0F0';
+    ctx.font='12pt Times';
+    y = (y+10)%500;
+    for(index = 0;index<299;)
     {
-       yPositions[index]=0;
+        text = String.fromCharCode(1e2+Math.random()*33);
+        x = index*10+10;
+        //console.log(y, yPositions[index]);
+        if(y<lengths[index])
+            ctx.fillText('\u0021', x,y);
+        rand = getRandomInt(1,10);
+        index=index+rand;
     }
-    else
-    {
-        yPositions[index] = y + 10;
-    }
-  });
+    lengths[getRandomInt(0,299)] = getRandomInt(0,500);
 };
 
 RunMatrix();
 function RunMatrix()
 {
 if(typeof Game_Interval != "undefined") clearInterval(Game_Interval);
- Game_Interval = setInterval(draw, 33);
+ Game_Interval = setInterval(draw, 60);
 }
 function StopMatrix()
 {
